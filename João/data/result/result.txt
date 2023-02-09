@@ -1,7 +1,0 @@
-A probabilidade de dados não transitivos com 6 dados, 4 faces e 4 valores é de 0/1 = 0.00000000000000000000
-A probabilidade de dados não transitivos com 6 dados, 5 faces e 4 valores é de 0/4096 = 0.00000000000000000000
-A probabilidade de dados não transitivos com 6 dados, 6 faces e 4 valores é de 0/1000000 = 0.00000000000000000000
-A probabilidade de dados não transitivos com 6 dados, 7 faces e 4 valores é de 0/64000000 = 0.00000000000000000000
-A probabilidade de dados não transitivos com 6 dados, 8 faces e 4 valores é de 3/1838265600 = 0.00000000163197311220
-A probabilidade de dados não transitivos com 6 dados, 9 faces e 4 valores é de 162/30840979456 = 0.00000000525275156704
-A probabilidade de dados não transitivos com 6 dados, 10 faces e 4 valores é de 4269/351298027520 = 0.00000001215207490191
