@@ -2,7 +2,7 @@ from more_itertools import distinct_permutations
 import matplotlib.pyplot as plt
 
 def permutate(values, faces):
-    
+
     topermutate = [1 for _ in range(faces)] + [0 for _ in range(values-1)]
     topermutate = ''.join(str(x) for x in topermutate)
 
@@ -117,12 +117,3 @@ for i in range(3, 16):
 #     plt.grid(True)
 #     plt.show()
 #     plt.show()
-
-    
-
-    
-
-
-
-
-    
