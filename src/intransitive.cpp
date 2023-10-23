@@ -72,18 +72,7 @@ prefixes(unsigned n) {
 inline std::vector<unsigned>
 countX(std::string str) {
     std::vector<unsigned> X = {0, 0, 0};
-    for (char c : str)
-        switch (c) {
-            case 'A':
-                X[A]++;
-                break;
-            case 'B':
-                X[B]++;
-                break;
-            case 'C':
-                X[C]++;
-                break;
-        }
+    for (char c : str) X[c - 'A']++;
     return X;
 }
 
@@ -95,7 +84,7 @@ intransitive (std::string permutation,
               std::array<uint16_t, 3> numXY) {
     int n2 = n*n;
     unsigned permutationSize = permutation.length();
-    
+
     /* count the number of vitories and perform an early exit if it's too bad */
     std::array<unsigned, 3> numY = {n - numX[A], n - numX[B], n - numX[C]};
         for (unsigned i = 0; i < permutationSize; i++){
@@ -116,11 +105,11 @@ intransitive (std::string permutation,
                     numXY[CA] += numX[A];
                     break;
             }
-            if((2*(numXY[A] + numY[A] * n)<=n2 and
+            if((2*(numXY[A] + numY[A] * n) <= n2 and
                 2*(numXY[C] + numY[C] * numX[A]) >= n2
-             or(2*(numXY[B] + numY[B] * n)<=n2 and
+             or(2*(numXY[B] + numY[B] * n) <= n2 and
                 2*(numXY[A] + numY[A] * numX[B]) >= n2)
-             or(2*(numXY[C] + numY[C] * n)<=n2 and
+             or(2*(numXY[C] + numY[C] * n) <= n2 and
                 2*(numXY[B] + numY[B] * numX[C]) >= n2))) return 0;
         }
     return ((2*numXY[AB] > n2 and
@@ -135,10 +124,10 @@ inline void
 scan_games (std::string prefix,
             std::string str,
             uint64_t &numT,
-            unsigned n,
             std::array<uint16_t, 3> numX,
             std::array<uint16_t, 3> numXY) {
 
+    unsigned n = str.length() + prefix.length();
     /* Increment the number of intransitive strings if str is intransitive */
     do {
         numT += intransitive(str, n, numX, numXY);
@@ -178,7 +167,7 @@ int main(void) {
              {
                 continue;
              }
-            scan_games(prefix, GENERATE_GAME(numY), numTacc, n, numX, numXY);
+            scan_games(prefix, GENERATE_GAME(numY), numTacc, numX, numXY);
             numT += 3*numTacc;
         }
 
