@@ -126,9 +126,8 @@ int main(void) {
                              + std::string(n - numX[B], 'B')
                              + std::string(n - numX[C], 'C');
             /* Increment the numTacc if str is intransitive */
-            do {
-                numTacc += intransitive(str, n, numX, numXY);
-            } while (std::next_permutation(str.begin(), str.end()));
+            do numTacc += intransitive(str, n, numX, numXY);
+            while (std::next_permutation(str.begin(), str.end()));
             /* Stop if there's no next lexicographically ordered permutation */
             numT += 3*numTacc;
         }
