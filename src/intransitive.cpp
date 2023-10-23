@@ -188,13 +188,14 @@ int main(void) {
             numT += 3*numTacc;
         }
 
-        std::cout << std::endl << "    T(" << n << ") = " << numT << std::endl;
-
         auto stop = std::chrono::high_resolution_clock::now();
-
-        std::cout << "    Elapsed time: "
-                  << (double) std::chrono::duration_cast<std::chrono::milliseconds>(stop-start).count()/1000
-                  << "s" << std::endl;
+        typedef std::chrono::milliseconds ms;
+        double duration = std::chrono::duration_cast<ms>(stop-start).count();
+        std::cout << std::endl
+                  << "    T(" << n << ") = " << numT
+                  << std::endl
+                  << "    Elapsed time: " << duration/1000 << "s"
+                  << std::endl;
     }
 
     return 0;
