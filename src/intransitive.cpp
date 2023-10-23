@@ -10,7 +10,9 @@ enum X {A, B, C};
 enum XY {AB, BC, CA};
 
 #define GENERATE_GAME(numX) \
-    (std::string(numX[A], 'A')+std::string(numX[B], 'B')+std::string(numX[C], 'C'))
+    std::string(numX[A], 'A') + \
+    std::string(numX[B], 'B') + \
+    std::string(numX[C], 'C')
 
 #define COUNT_VICTORIES(str, numX, numXY) \
     do { \
@@ -94,7 +96,7 @@ intransitive (std::string permutation,
     int n2 = n*n;
     unsigned permutationSize = permutation.length();
     
-    // L: count the number of vitories and stop immediately if the str is too bad, performing an early exit.
+    /* count the number of vitories and perform an early exit if it's too bad */
     std::array<unsigned, 3> numY = {n - numX[A], n - numX[B], n - numX[C]};
         for (unsigned i = 0; i < permutationSize; i++){
             switch(permutation[i]){
@@ -114,10 +116,12 @@ intransitive (std::string permutation,
                     numXY[CA] += numX[A];
                     break;
             }
-            // L: checking if the string is too bad. Im not sure if checking only every other char of the string did anything for the optimization
-            if((2*(numXY[A]+numY[A]*n)<=n2 and 2*(numXY[C]+numY[C]*numX[A])>=n2
-             or(2*(numXY[B]+numY[B]*n)<=n2 and 2*(numXY[A]+numY[A]*numX[B])>=n2)
-             or(2*(numXY[C]+numY[C]*n)<=n2 and 2*(numXY[B]+numY[B]*numX[C])>=n2))) return 0;
+            if((2*(numXY[A] + numY[A] * n)<=n2 and
+                2*(numXY[C] + numY[C] * numX[A]) >= n2
+             or(2*(numXY[B] + numY[B] * n)<=n2 and
+                2*(numXY[A] + numY[A] * numX[B]) >= n2)
+             or(2*(numXY[C] + numY[C] * n)<=n2 and
+                2*(numXY[B] + numY[B] * numX[C]) >= n2))) return 0;
         }
     return ((2*numXY[AB] > n2 and
              2*numXY[BC] > n2 and
@@ -127,8 +131,6 @@ intransitive (std::string permutation,
              2*numXY[CA] < n2));
 }
 
-// L: Instead of computing COUNT_VICTORIES(prefix, numX, numXY) for every str, we can precompute it and pass numX, numXY as an argument of the function. This saves a lot of time.
-// L: the problem is that intransitive(str, n, numX, numXY) receives the pointers to numX and numXY, so I chose to instanciate a copy
 inline void
 scan_games (std::string prefix,
             std::string str,
@@ -167,12 +169,17 @@ int main(void) {
             std::array<uint16_t, 3> numXY = {0, 0, 0};
 
             COUNT_VICTORIES(prefix, numX, numXY);
-            std::vector<unsigned> numY = {n - numX[A], n - numX[B], n - numX[C]};
+            std::vector<unsigned> numY = {n - numX[A],
+                                          n - numX[B],
+                                          n - numX[C]};
 
             unsigned n2 = n*n;
-            if((2*(numXY[AB]+numY[AB]*n) <= n2 and 2*(numXY[CA]+numY[CA]*numX[AB]) >= n2)
-             or(2*(numXY[BC]+numY[BC]*n) <= n2 and 2*(numXY[AB]+numY[AB]*numX[BC]) >= n2)
-             or(2*(numXY[CA]+numY[CA]*n) <= n2 and 2*(numXY[BC]+numY[BC]*numX[CA]) >= n2)
+            if((2*(numXY[AB] + numY[AB] * n) <= n2 and
+                2*(numXY[CA] + numY[CA] * numX[AB]) >= n2)
+             or(2*(numXY[BC] + numY[BC] * n) <= n2 and
+                2*(numXY[AB] + numY[AB] * numX[BC]) >= n2)
+             or(2*(numXY[CA] + numY[CA] * n) <= n2 and
+                2*(numXY[BC] + numY[BC] * numX[CA]) >= n2)
              or(numX[A] == numX[B] and numX[A] == numY[A]))
              {
                 continue;
@@ -181,7 +188,7 @@ int main(void) {
             numT += 3*numTacc;
         }
 
-        std::cout << "    T(" << n << ") = " << numT << std::endl;
+        std::cout << std::endl << "    T(" << n << ") = " << numT << std::endl;
 
         auto stop = std::chrono::high_resolution_clock::now();
 
