@@ -89,15 +89,13 @@ countX(std::string str) {
 inline bool
 intransitive (std::string permutation,
               unsigned n,
-              uint16_t *numX,
-              uint16_t *numXY) {
+              std::array<uint16_t, 3> numX,
+              std::array<uint16_t, 3> numXY) {
     int n2 = n*n;
-    // L: we dont need this anymore
-    //COUNT_VICTORIES(permutation, numX, numXY);
     unsigned permutationSize = permutation.length();
     
     // L: count the number of vitories and stop immediately if the str is too bad, performing an early exit.
-    unsigned numY[3]={n-numX[A], n-numX[B], n-numX[C]};
+    std::array<unsigned, 3> numY = {n - numX[A], n - numX[B], n - numX[C]};
         for (unsigned i = 0; i < permutationSize; i++){
             switch(permutation[i]){
                 case 'A':
@@ -136,14 +134,14 @@ scan_games (std::string prefix,
             std::string str,
             uint64_t &numT,
             unsigned n,
-            uint16_t numX[3],
-            uint16_t numXY[3]) {
+            std::array<uint16_t, 3> numX,
+            std::array<uint16_t, 3> numXY) {
 
     while (true) {
         // L: instanciating a copy of numX and numXY
-        uint16_t numA[3] = { numX[A], numX[B], numX[C] };
-        uint16_t numAB[3] = { numXY[AB], numXY[BC], numXY[CA] };
-        numT += intransitive(str, n, numA, numAB);
+        std::array<uint16_t, 3> numY = numX;
+        std::array<uint16_t, 3> numYZ = numXY;
+        numT += intransitive(str, n, numY, numYZ);
 
 
         /* find the next lexicographically ordered permutation
@@ -165,8 +163,8 @@ int main(void) {
         #pragma omp parallel for reduction(+:numT)
         for(std::string prefix : prefixes(n)){
             uint64_t numTacc = 0;
-            uint16_t numX[3] = {0, 0, 0};
-            uint16_t numXY[3] = {0, 0, 0};
+            std::array<uint16_t, 3> numX = {0, 0, 0};
+            std::array<uint16_t, 3> numXY = {0, 0, 0};
 
             COUNT_VICTORIES(prefix, numX, numXY);
             std::vector<unsigned> numY = {n - numX[A], n - numX[B], n - numX[C]};
