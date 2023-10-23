@@ -139,13 +139,11 @@ scan_games (std::string prefix,
             std::array<uint16_t, 3> numX,
             std::array<uint16_t, 3> numXY) {
 
-    while (true) {
+    /* Increment the number of intransitive strings if str is intransitive */
+    do {
         numT += intransitive(str, n, numX, numXY);
-
-        /* find the next lexicographically ordered permutation
-           if no such permutation exists, we are done in this prefix */
-        if (!std::next_permutation(str.begin(), str.end())) break;
-    }
+    } while (std::next_permutation(str.begin(), str.end()));
+    /* Stop if there's no next lexicographically ordered permutation */
 }
 
 // Driver code
