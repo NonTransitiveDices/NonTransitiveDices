@@ -9,11 +9,6 @@
 enum X {A, B, C};
 enum XY {AB, BC, CA};
 
-#define GENERATE_GAME(numX) \
-    std::string(numX[A], 'A') + \
-    std::string(numX[B], 'B') + \
-    std::string(numX[C], 'C')
-
 #define COUNT_VICTORIES(str, numX, numXY) \
     do { \
         unsigned permutationSize = str.length(); \
@@ -87,52 +82,37 @@ intransitive (std::string permutation,
 
     /* count the number of vitories and perform an early exit if it's too bad */
     std::array<unsigned, 3> numY = {n - numX[A], n - numX[B], n - numX[C]};
-        for (unsigned i = 0; i < permutationSize; i++){
-            switch(permutation[i]){
-                case 'A':
-                    numX[A]++;
-                    numY[A]--;
-                    numXY[AB] += numX[B];
-                    break;
-                case 'B':
-                    numX[B]++;
-                    numY[B]--;
-                    numXY[BC] += numX[C];
-                    break;
-                case 'C':
-                    numX[C]++;
-                    numY[C]--;
-                    numXY[CA] += numX[A];
-                    break;
-            }
-            if((2*(numXY[A] + numY[A] * n) <= n2 and
-                2*(numXY[C] + numY[C] * numX[A]) >= n2
-             or(2*(numXY[B] + numY[B] * n) <= n2 and
-                2*(numXY[A] + numY[A] * numX[B]) >= n2)
-             or(2*(numXY[C] + numY[C] * n) <= n2 and
-                2*(numXY[B] + numY[B] * numX[C]) >= n2))) return 0;
+    for (unsigned i = 0; i < permutationSize; i++){
+        switch(permutation[i]){
+            case 'A':
+                numX[A]++;
+                numY[A]--;
+                numXY[AB] += numX[B];
+                break;
+            case 'B':
+                numX[B]++;
+                numY[B]--;
+                numXY[BC] += numX[C];
+                break;
+            case 'C':
+                numX[C]++;
+                numY[C]--;
+                numXY[CA] += numX[A];
+                break;
         }
+        if((2*(numXY[AB] + numY[A] * n) <= n2 and
+            2*(numXY[CA] + numY[C] * numX[A]) >= n2
+         or(2*(numXY[BC] + numY[B] * n) <= n2 and
+            2*(numXY[AB] + numY[A] * numX[B]) >= n2)
+         or(2*(numXY[CA] + numY[C] * n) <= n2 and
+            2*(numXY[BC] + numY[B] * numX[C]) >= n2))) return 0;
+    }
     return ((2*numXY[AB] > n2 and
              2*numXY[BC] > n2 and
              2*numXY[CA] > n2)
           or(2*numXY[AB] < n2 and
              2*numXY[BC] < n2 and
              2*numXY[CA] < n2));
-}
-
-inline void
-scan_games (std::string prefix,
-            std::string str,
-            uint64_t &numT,
-            std::array<uint16_t, 3> numX,
-            std::array<uint16_t, 3> numXY) {
-
-    unsigned n = str.length() + prefix.length();
-    /* Increment the number of intransitive strings if str is intransitive */
-    do {
-        numT += intransitive(str, n, numX, numXY);
-    } while (std::next_permutation(str.begin(), str.end()));
-    /* Stop if there's no next lexicographically ordered permutation */
 }
 
 // Driver code
@@ -163,11 +143,16 @@ int main(void) {
                 2*(numXY[AB] + numY[AB] * numX[BC]) >= n2)
              or(2*(numXY[CA] + numY[CA] * n) <= n2 and
                 2*(numXY[BC] + numY[BC] * numX[CA]) >= n2)
-             or(numX[A] == numX[B] and numX[A] == numY[A]))
-             {
-                continue;
-             }
-            scan_games(prefix, GENERATE_GAME(numY), numTacc, numX, numXY);
+             or(numX[A] == numX[B] and numX[A] == numY[A])) continue;
+
+            std::string str = std::string(numY[A], 'A')
+                            + std::string(numY[B], 'B')
+                            + std::string(numY[C], 'C');
+            /* Increment the number of intransitive strings if str is intransitive */
+            do {
+                numTacc += intransitive(str, n, numX, numXY);
+            } while (std::next_permutation(str.begin(), str.end()));
+            /* Stop if there's no next lexicographically ordered permutation */
             numT += 3*numTacc;
         }
 
