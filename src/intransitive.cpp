@@ -61,16 +61,6 @@ prefixes(unsigned n) {
     return prefixVector;
 }
 
-/* Returns a std::vector<unsigned> of three entries, which correspond
-   to the amount of occurences of the chars 'A', 'B' and 'C' on the
-   char* str */
-inline std::vector<unsigned>
-countX(std::string str) {
-    std::vector<unsigned> X = {0, 0, 0};
-    for (char c : str) X[c - 'A']++;
-    return X;
-}
-
 /* Predicate function: Tests if the char* permutation is intransitive */
 inline bool
 intransitive (std::string permutation,
