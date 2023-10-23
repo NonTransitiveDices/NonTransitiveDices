@@ -81,38 +81,30 @@ intransitive (std::string permutation,
     unsigned permutationSize = permutation.length();
 
     /* count the number of vitories and perform an early exit if it's too bad */
-    std::array<unsigned, 3> numY = {n - numX[A], n - numX[B], n - numX[C]};
     for (unsigned i = 0; i < permutationSize; i++){
         switch(permutation[i]){
             case 'A':
                 numX[A]++;
-                numY[A]--;
                 numXY[AB] += numX[B];
                 break;
             case 'B':
                 numX[B]++;
-                numY[B]--;
                 numXY[BC] += numX[C];
                 break;
             case 'C':
                 numX[C]++;
-                numY[C]--;
                 numXY[CA] += numX[A];
                 break;
         }
-        if((2*(numXY[AB] + numY[A] * n) <= n2 and
-            2*(numXY[CA] + numY[C] * numX[A]) >= n2
-         or(2*(numXY[BC] + numY[B] * n) <= n2 and
-            2*(numXY[AB] + numY[A] * numX[B]) >= n2)
-         or(2*(numXY[CA] + numY[C] * n) <= n2 and
-            2*(numXY[BC] + numY[B] * numX[C]) >= n2))) return 0;
+        if((2*(numX[A] * n - numXY[AB]) >= n2 and
+            2*(numXY[CA] + (n - numX[C]) * numX[A]) >= n2 or
+           (2*(numX[B] * n - numXY[BC]) >= n2 and
+            2*(numXY[AB] + (n - numX[A]) * numX[B]) >= n2) or
+           (2*(numX[C] * n - numXY[CA]) >= n2 and
+            2*(numXY[BC] + (n - numX[B]) * numX[C]) >= n2))) return 0;
     }
-    return ((2*numXY[AB] > n2 and
-             2*numXY[BC] > n2 and
-             2*numXY[CA] > n2)
-          or(2*numXY[AB] < n2 and
-             2*numXY[BC] < n2 and
-             2*numXY[CA] < n2));
+    return ((2*numXY[AB] > n2 and 2*numXY[BC] > n2 and 2*numXY[CA] > n2) or
+            (2*numXY[AB] < n2 and 2*numXY[BC] < n2 and 2*numXY[CA] < n2));
 }
 
 // Driver code
@@ -132,22 +124,19 @@ int main(void) {
             std::array<uint16_t, 3> numXY = {0, 0, 0};
 
             COUNT_VICTORIES(prefix, numX, numXY);
-            std::vector<unsigned> numY = {n - numX[A],
-                                          n - numX[B],
-                                          n - numX[C]};
 
             unsigned n2 = n*n;
-            if((2*(numXY[AB] + numY[A] * n) <= n2 and
-                2*(numXY[CA] + numY[C] * numX[A]) >= n2)
-             or(2*(numXY[BC] + numY[B] * n) <= n2 and
-                2*(numXY[AB] + numY[A] * numX[B]) >= n2)
-             or(2*(numXY[CA] + numY[C] * n) <= n2 and
-                2*(numXY[BC] + numY[B] * numX[C]) >= n2)
-             or(numX[A] == numX[B] and numX[A] == numY[A])) continue;
+            if((2*(numX[A] * n - numXY[AB]) >= n2 and
+                2*(numXY[CA] + (n - numX[C]) * numX[A]) >= n2) or
+               (2*(numX[B] * n - numXY[BC]) >= n2 and
+                2*(numXY[AB] + (n - numX[A]) * numX[B]) >= n2) or
+               (2*(numX[C] * n - numXY[CA]) >= n2 and
+                2*(numXY[BC] + (n - numX[B]) * numX[C]) >= n2)
+             or(numX[A] == numX[B] and 2 * numX[A] == n)) continue;
 
-            std::string str = std::string(numY[A], 'A')
-                            + std::string(numY[B], 'B')
-                            + std::string(numY[C], 'C');
+             std::string str = std::string(n - numX[A], 'A')
+                             + std::string(n - numX[B], 'B')
+                             + std::string(n - numX[C], 'C');
             /* Increment the number of intransitive strings if str is intransitive */
             do {
                 numTacc += intransitive(str, n, numX, numXY);
@@ -158,7 +147,7 @@ int main(void) {
 
         auto stop = std::chrono::high_resolution_clock::now();
         typedef std::chrono::milliseconds ms;
-        double duration = std::chrono::duration_cast<ms>(stop-start).count();
+        double duration = std::chrono::duration_cast<ms>(stop - start).count();
         std::cout << std::endl
                   << "    T(" << n << ") = " << numT
                   << std::endl
