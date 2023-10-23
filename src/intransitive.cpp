@@ -38,8 +38,7 @@ has(char c, std::string str) {
 }
 
 /* Auxiliary function for prefixes(unsigned): Returns a std::vector<char>
-   containing the valid extensions for a certain char* prefix
-   str. */
+   containing the valid extensions for a certain char* prefix str. */
 inline std::vector<char>
 extensions(std::string str) {
     std::vector<char> extensionVector = { 'A', 'B' };
@@ -47,7 +46,7 @@ extensions(std::string str) {
     return extensionVector;
 }
 
-/* Returns a std::vector<char*> with all prefixes of size uint */
+/* Returns a std::vector<char*> with all prefixes of size uint n */
 inline std::vector<std::string>
 prefixes(unsigned n) {
     std::vector<std::string> prefixVector = { "A" };
@@ -61,7 +60,7 @@ prefixes(unsigned n) {
     return prefixVector;
 }
 
-/* Predicate function: Tests if the char* permutation is intransitive */
+/* Predicate function: Tests if the std::string permutation is intransitive */
 inline bool
 intransitive (std::string permutation,
               unsigned n,
@@ -97,7 +96,6 @@ intransitive (std::string permutation,
             (2*numXY[AB] < n2 and 2*numXY[BC] < n2 and 2*numXY[CA] < n2));
 }
 
-// Driver code
 int main(void) {
     std::cout << std::setprecision(10) << std::fixed;
 
@@ -127,7 +125,7 @@ int main(void) {
              std::string str = std::string(n - numX[A], 'A')
                              + std::string(n - numX[B], 'B')
                              + std::string(n - numX[C], 'C');
-            /* Increment the number of intransitive strings if str is intransitive */
+            /* Increment the numTacc if str is intransitive */
             do {
                 numTacc += intransitive(str, n, numX, numXY);
             } while (std::next_permutation(str.begin(), str.end()));
