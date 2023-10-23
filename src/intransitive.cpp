@@ -67,7 +67,7 @@ intransitive (std::string permutation,
               unsigned n,
               std::array<uint16_t, 3> numX,
               std::array<uint16_t, 3> numXY) {
-    int n2 = n*n;
+    unsigned n2 = n*n;
     unsigned permutationSize = permutation.length();
 
     /* count the number of vitories and perform an early exit if it's too bad */
