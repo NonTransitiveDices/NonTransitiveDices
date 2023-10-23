@@ -140,11 +140,7 @@ scan_games (std::string prefix,
             std::array<uint16_t, 3> numXY) {
 
     while (true) {
-        // L: instanciating a copy of numX and numXY
-        std::array<uint16_t, 3> numY = numX;
-        std::array<uint16_t, 3> numYZ = numXY;
-        numT += intransitive(str, n, numY, numYZ);
-
+        numT += intransitive(str, n, numX, numXY);
 
         /* find the next lexicographically ordered permutation
            if no such permutation exists, we are done in this prefix */
