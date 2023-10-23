@@ -137,12 +137,12 @@ int main(void) {
                                           n - numX[C]};
 
             unsigned n2 = n*n;
-            if((2*(numXY[AB] + numY[AB] * n) <= n2 and
-                2*(numXY[CA] + numY[CA] * numX[AB]) >= n2)
-             or(2*(numXY[BC] + numY[BC] * n) <= n2 and
-                2*(numXY[AB] + numY[AB] * numX[BC]) >= n2)
-             or(2*(numXY[CA] + numY[CA] * n) <= n2 and
-                2*(numXY[BC] + numY[BC] * numX[CA]) >= n2)
+            if((2*(numXY[AB] + numY[A] * n) <= n2 and
+                2*(numXY[CA] + numY[C] * numX[A]) >= n2)
+             or(2*(numXY[BC] + numY[B] * n) <= n2 and
+                2*(numXY[AB] + numY[A] * numX[B]) >= n2)
+             or(2*(numXY[CA] + numY[C] * n) <= n2 and
+                2*(numXY[BC] + numY[B] * numX[C]) >= n2)
              or(numX[A] == numX[B] and numX[A] == numY[A])) continue;
 
             std::string str = std::string(numY[A], 'A')
