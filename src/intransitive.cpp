@@ -32,7 +32,7 @@ enum XY {AB, BC, CA};
 
 /* Predicate function: Tests if a char* str has the char d */
 inline bool
-has(char c, std::string str) {
+has(const char& c, const std::string& str) {
     for (char d : str) if (d == c) return true;
     return false;
 }
@@ -40,7 +40,7 @@ has(char c, std::string str) {
 /* Auxiliary function for prefixes(unsigned): Returns a std::vector<char>
    containing the valid extensions for a certain char* prefix str. */
 inline std::vector<char>
-extensions(std::string str) {
+extensions(const std::string& str) {
     std::vector<char> extensionVector = { 'A', 'B' };
     if (has('B', str)) extensionVector.emplace_back('C');
     return extensionVector;
@@ -62,7 +62,7 @@ prefixes(unsigned n) {
 
 /* Predicate function: Tests if the std::string permutation is intransitive */
 inline bool
-intransitive (std::string permutation,
+intransitive (const std::string& permutation,
               unsigned n,
               std::array<uint16_t, 3> numX,
               std::array<uint16_t, 3> numXY) {
