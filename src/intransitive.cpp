@@ -85,12 +85,12 @@ intransitive (const std::string& permutation,
                 numXY[CA] += numX[A];
                 break;
         }
-        if((2*(numX[A] * n - numXY[AB]) >= n2 and
-            2*(numXY[CA] + (n - numX[C]) * numX[A]) >= n2 or
-           (2*(numX[B] * n - numXY[BC]) >= n2 and
-            2*(numXY[AB] + (n - numX[A]) * numX[B]) >= n2) or
-           (2*(numX[C] * n - numXY[CA]) >= n2 and
-            2*(numXY[BC] + (n - numX[B]) * numX[C]) >= n2))) return 0;
+        if ((2*(numX[A] * n - numXY[AB]) >= n2 and
+             2*(numXY[CA] + (n - numX[C]) * numX[A]) >= n2) or
+            (2*(numX[B] * n - numXY[BC]) >= n2 and
+             2*(numXY[AB] + (n - numX[A]) * numX[B]) >= n2) or
+            (2*(numX[C] * n - numXY[CA]) >= n2 and
+             2*(numXY[BC] + (n - numX[B]) * numX[C]) >= n2)) return 0;
     }
     return ((2*numXY[AB] > n2 and 2*numXY[BC] > n2 and 2*numXY[CA] > n2) or
             (2*numXY[AB] < n2 and 2*numXY[BC] < n2 and 2*numXY[CA] < n2));
